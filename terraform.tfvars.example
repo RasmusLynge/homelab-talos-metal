@@ -1,0 +1,5 @@
+node_ip      = "192.168.0.0"
+gateway      = "192.168.0.1"
+node_mac     = "aa:bb:cc:dd:ee:ff"
+install_disk = "/dev/nvme0n1"
+hostname     = "talos-cp1"

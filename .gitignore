@@ -1,0 +1,19 @@
+# Terraform state — contains cluster CA private keys and bootstrap token in plaintext
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Variable files — may contain secrets or LAN details
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Generated credentials
+talosconfig
+kubeconfig
