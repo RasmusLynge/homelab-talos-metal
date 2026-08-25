@@ -1,6 +1,10 @@
 ipam:
   mode: kubernetes
 
+# I only have one node
+operator:
+  replicas: 1
+
 kubeProxyReplacement: true
 
 # KubePrism — Talos's local API server proxy, lets Cilium reach the
