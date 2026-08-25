@@ -49,7 +49,7 @@ data "talos_machine_configuration" "cp" {
           disabled = true
         }
         extraManifests = [
-          "https://raw.githubusercontent.com/rasmuslynge/talos_metal/cilium.yaml"
+          "https://raw.githubusercontent.com/rasmuslynge/homelab-talos-metal/main/extraManifests/cilium.yaml"
         ]
       }
     })
