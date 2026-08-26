@@ -4,5 +4,5 @@ helm repo update
 helm template cilium cilium/cilium \
   --version 1.17.1 \
   --namespace kube-system \
-  -f cilium-values.yaml \
-  > cilium.yaml
+  -f extraManifests/cilium/cilium-values.yaml \
+  > extraManifests/cilium/cilium.yaml

@@ -1,7 +1,18 @@
-# TalOS homelab setup
+# Talos homelab setup
+
+## what is this?
+This is for setting up my own small homelab consisting of one old Gigabyte nuc.  
+
+This guide and terraform project is for bootstrapping the "cluster" with no keyboard, mouse or monitor plugged into the machine. 
+
+The bootstrapping consists of:
+- Installing talos on the machine
+- Installing cilium on the cluster
+- Installing Argo on the cluster
+- Starting Argo root App of Apps
 
 
-## prerequisites
+## The guide!
 ### 01 Download Talos iso
 I used [this](https://factory.talos.dev/?arch=amd64&platform=metal&schematic-id=22a73b21ea2e27057f17a22b56fdf89e09868979c10d22f10a9b7e9c1e988a60&target=metal&version=1.13.9)
 - version 1.13.9 (newest)
@@ -27,6 +38,7 @@ sudo dd if=metal-amd64.iso of=/dev/sda bs=4M status=progress oflag=sync
 
 ### 03 boot from usb
 boot
+> fyi: talos does not support wifi - an ethernet connection is needed
 
 ### 04 Find IP of Talos machine 
 > *From another machine on the same network:*
@@ -68,7 +80,6 @@ edit the vars not matching your setup.
 
 ### 09 tf plan and apply
 
-If you want to take out the bootable usb while reboot, you can run a `ping` while applying to know then your Talos machine is rebooting.
 ```
-ping 192.168.0.36 
+terraform apply
 ```

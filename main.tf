@@ -48,9 +48,7 @@ data "talos_machine_configuration" "cp" {
         proxy = {
           disabled = true
         }
-        extraManifests = [
-          "https://raw.githubusercontent.com/RasmusLynge/homelab-talos-metal/refs/heads/main/extraManifests/cilium.yaml"
-        ]
+        extraManifests = var.extraManifests
       }
     })
   ]

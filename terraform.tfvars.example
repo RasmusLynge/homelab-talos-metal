@@ -1,5 +1,9 @@
-node_ip      = "192.168.0.0"
-gateway      = "192.168.0.1"
-node_mac     = "aa:bb:cc:dd:ee:ff"
-install_disk = "/dev/nvme0n1"
-hostname     = "talos-cp1"
+node_ip      = "192.168.0.0" # get from step 04 ip -4 addr show
+gateway      = "192.168.0.1" # get from step 04 ip -4 addr show
+node_mac     = "aa:bb:cc:dd:ee:ff" # get from step 04 nmap
+install_disk = "/dev/nvme0n1" # get from step 07
+
+
+extraManifests = [
+    "https://raw.githubusercontent.com/RasmusLynge/homelab-talos-metal/refs/heads/main/extraManifests/cilium/cilium.yaml"
+]

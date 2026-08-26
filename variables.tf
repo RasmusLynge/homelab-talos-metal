@@ -27,7 +27,7 @@ variable "talos_version" {
   default = "v1.13.9"
 }
 
-variable "hostname" {
-  type    = string
-  default = "talos-cp1"
+variable "extraManifests" {
+  type        = list(string)
+  description = "List of links to extra manifests to include in the cluster on bootstrap"
 }
