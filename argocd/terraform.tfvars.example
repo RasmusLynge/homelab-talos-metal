@@ -1,5 +1,5 @@
-gitops_repo_url      = "git@github.com:RasmusLynge/homelab_argo_infra_platform.git"
+chart_version          = "10.4.0"
+gitops_repo_url      = "git@github.com:user/repo.git"
 gitops_repo_revision = "main"
-gitops_repo_path     = "argocd/apps"
-
-gitops_repo_ssh_private_key_path "../local/"
+gitops_repo_path     = "bootstrap"
+gitops_repo_ssh_private_key_path = "../local/gitops_repo_deploy_key"
