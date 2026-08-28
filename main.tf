@@ -7,6 +7,71 @@ terraform {
   }
 }
 
+locals {
+  argo_repo_ssh_private_key = fileexists(var.argo_repo_ssh_private_key_path) ? file(var.argo_repo_ssh_private_key_path) : null
+  argocd_namespace = "argocd"
+
+  repo_credentials_manifest = local.argo_repo_ssh_private_key != null ? [{
+    name = "argocd-repo-credentials"
+    contents = yamlencode({
+      apiVersion = "v1"
+      kind       = "Secret"
+      metadata = {
+        name      = "gitops-repo-credentials"
+        namespace = local.argocd_namespace
+        labels = {
+          "argocd.argoproj.io/secret-type" = "repository"
+        }
+      }
+      stringData = {
+        type          = "git"
+        url           = var.argo_repo_url
+        sshPrivateKey = local.argo_repo_ssh_private_key
+      }
+    })
+  }] : []
+
+  bootstrap_app_manifest = var.argo_repo_url != "" ? [{
+    name = "argocd-bootstrap-app"
+    contents = yamlencode({
+      apiVersion = "argoproj.io/v1alpha1"
+      kind       = "Application"
+      metadata = {
+        name      = "root"
+        namespace = local.argocd_namespace
+      }
+      spec = {
+        project = "default"
+        source = {
+          repoURL        = var.argo_repo_url
+          targetRevision = var.argo_target_revision
+          path           = var.argo_path
+        }
+        destination = {
+          server    = "https://kubernetes.default.svc"
+          namespace = local.argocd_namespace
+        }
+        syncPolicy = {
+          automated = {
+            prune    = true
+            selfHeal = true
+          }
+          syncOptions = ["CreateNamespace=true"]
+        }
+      }
+    })
+  }] : []
+
+  argocd_namespace_manifest = [{
+    name = "argocd-namespace"
+    contents = yamlencode({
+      apiVersion = "v1"
+      kind       = "Namespace"
+      metadata   = { name = local.argocd_namespace }
+    })
+  }]
+}
+
 resource "talos_machine_secrets" "this" {
   talos_version = var.talos_version
 }
@@ -49,6 +114,37 @@ data "talos_machine_configuration" "cp" {
           disabled = true
         }
         extraManifests = var.extraManifests
+        inlineManifests = [
+    {
+      name = "argocd-root-app"
+      contents = yamlencode({
+        apiVersion = "argoproj.io/v1alpha1"
+        kind       = "Application"
+        metadata = {
+          name      = "root"
+          namespace = "argocd"
+        }
+        spec = {
+          project = "default"
+          source = {
+            repoURL        = var.argo_repo_url
+            targetRevision = var.argo_target_revision
+            path           = var.argo_path
+          }
+          destination = {
+            server    = "https://kubernetes.default.svc"
+            namespace = "argocd"
+          }
+          syncPolicy = {
+            automated = {
+              prune    = true
+              selfHeal = true
+            }
+          }
+        }
+      })
+    }
+  ]
       }
     })
   ]
@@ -80,12 +176,12 @@ resource "talos_cluster_kubeconfig" "this" {
 
 resource "local_file" "talosconfig" {
   content         = data.talos_client_configuration.this.talos_config
-  filename        = "${path.module}/talosconfig"
+  filename        = "${path.module}/local/talosconfig"
   file_permission = "0600"
 }
 
 resource "local_file" "kubeconfig" {
   content         = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename        = "${path.module}/kubeconfig"
+  filename        = "${path.module}/local/kubeconfig"
   file_permission = "0600"
 }

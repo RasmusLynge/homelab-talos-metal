@@ -1,0 +1,7 @@
+helm repo add argo https://argoproj.github.io/argo-helm
+helm template argocd argo/argo-cd \
+  --version 10.4.0 \
+  --namespace argocd \
+  --include-crds \
+  -f manifests/argocd-values.yaml \
+  > manifests/argocd-install.yaml

@@ -8,8 +8,6 @@ This guide and terraform project is for bootstrapping the "cluster" with no keyb
 The bootstrapping consists of:
 - Installing talos on the machine
 - Installing cilium on the cluster
-- Installing Argo on the cluster
-- Starting Argo root App of Apps
 
 
 ## The guide!
@@ -83,3 +81,10 @@ edit the vars not matching your setup.
 ```
 terraform apply
 ```
+
+### 10 next step
+next step is to [install argo with a root app (of apps)](/argocd/readme.md)
+
+This can be done with talos extraManifests or inlineManifests, but they only run once after install. I will be using another terraform project for this to let me rerun it. 
+
+Why not just run it as a module in this project? Terraform will not know how to plan the kubernetes resources without the cluster existing. 
