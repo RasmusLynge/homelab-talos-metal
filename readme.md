@@ -1,7 +1,7 @@
 # Talos homelab setup
 
-## what is this?
-This is for setting up my own small homelab consisting of one old Gigabyte nuc.  
+## what is this repo?
+This is for setting up my own small homelab consisting of one old nuc.  
 
 This guide and terraform project is for bootstrapping the "cluster" with no keyboard, mouse or monitor plugged into the machine. 
 
@@ -35,7 +35,7 @@ sudo dd if=metal-amd64.iso of=/dev/sda bs=4M status=progress oflag=sync
 ```
 
 ### 03 boot from usb
-boot
+boot the machine with usb inserted
 > fyi: talos does not support wifi - an ethernet connection is needed
 
 ### 04 Find IP of Talos machine 
@@ -83,8 +83,10 @@ terraform apply
 ```
 
 ### 10 next step
-next step is to [install argo with a root app (of apps)](/argocd/readme.md)
+Congrats! The cluster is now up and running. Remember to save the kube and talosconfig somewhere safe.
 
-This can be done with talos extraManifests or inlineManifests, but they only run once after install. I will be using another terraform project for this to let me rerun it. 
+next step could be to [install argo with a root app (of apps)](/argocd/readme.md)
+
+This can be done with talos extraManifests or inlineManifests, but they only run once after bootstrap. I will be using another terraform project for this to let me rerun it. 
 
 Why not just run it as a module in this project? Terraform will not know how to plan the kubernetes resources without the cluster existing. 
