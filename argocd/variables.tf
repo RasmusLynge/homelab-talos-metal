@@ -4,17 +4,6 @@ variable "kubeconfig_path" {
   default     = "../local/kubeconfig"
 }
 
-variable "namespace" {
-  description = "Namespace to install ArgoCD into."
-  type        = string
-  default     = "argocd"
-}
-
-variable "chart_version" {
-  description = "Pinned version of the argo-cd Helm chart (argoproj/argo-helm)."
-  type        = string
-}
-
 variable "helm_values" {
   description = "Additional raw YAML values passed to the argo-cd Helm release."
   type        = list(string)
@@ -22,9 +11,8 @@ variable "helm_values" {
 }
 
 variable "gitops_repo_url" {
-  description = "Git repository URL for ArgoCD's bootstrap app-of-apps Application. Leave empty to skip creating it."
+  description = "Git repository URL for ArgoCD's bootstrap app-of-apps Application."
   type        = string
-  default     = ""
 }
 
 variable "gitops_repo_revision" {
@@ -39,15 +27,19 @@ variable "gitops_repo_path" {
   default     = "."
 }
 
-variable "bootstrap_app_name" {
-  description = "Name of the seed app-of-apps Application resource."
-  type        = string
-  default     = "root"
-}
-
 variable "gitops_repo_ssh_private_key_path" {
   description = "Path to the SSH private key (deploy key) for authenticating to a private gitops_repo_url. Leave null to skip creating repo credentials (e.g. for a public repo)."
   type        = string
   default     = null
   sensitive   = true
+}
+
+variable "gitops_repo_argocd_config_url" {
+  description = "URL to the ArgoCD Helm chart config.yaml in the GitOps repo. This is used to fetch the same config used for ArgoCD in the GitOps repo to make sure the same will be bootstrapped."
+  type        = string
+}
+
+variable "gitops_repo_argocd_bootstrap_app_url" {
+  description = "URL to the bootstrap app-of-apps Application YAML in the GitOps repo."
+  type        = string
 }

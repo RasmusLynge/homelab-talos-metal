@@ -3,6 +3,7 @@
 Meant for one time bootstrapping of argocd. 
 Argo will afterwards manage itself through GitOps.
 
+
 ## 01 ssh keygen for private github repo
 
 ```sh
@@ -13,7 +14,6 @@ cat ../local/gitops_repo_deploy_key.pub
 
 # 02 deploy
 run terraform plan and apply
-
 
 # 03 get access to argo
 if you have not set anything else up in the cluster yet:
